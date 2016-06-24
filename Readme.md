@@ -16,9 +16,3 @@ minimal sample implement
 webpack watches update & re-build automatically
 
 `npm run build`
-
-## run 
-
-it need json response server.
-
-`python -m SimpleHTTPServer`

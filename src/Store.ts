@@ -1,10 +1,8 @@
-import {counter} from './Reducer'
-import { createStore, applyMiddleware } from 'redux'
-import thunk from 'redux-thunk';
+import {counter} from "./Reducer";
+import {createStore} from "redux";
 
 const store = createStore(
-    counter,
-    applyMiddleware(thunk)
+    counter
 );
 
 export default store
