@@ -1,5 +1,5 @@
 import * as React from "react";
-import {AppState} from "./State";
+import {AppState} from "./AppState";
 import {observer} from "mobx-react";
 
 export interface Props {
@@ -7,16 +7,16 @@ export interface Props {
 }
 
 @observer
-export class MyComponent extends React.Component<Props, {}> {
-    onReset = () => {
-        this.props.appState.resetTimer();
+export class HelloComponent extends React.Component<Props, {}> {
+    increment = () => {
+        this.props.appState.incrementCounter();
     };
 
     render() {
         return (
             <div>
-                <button onClick={this.onReset}>
-                    Seconds passed: {this.props.appState.timer}
+                <button onClick={this.increment}>
+                    click count(async): {this.props.appState.counter}
                 </button>
             </div>
         )
