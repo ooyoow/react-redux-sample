@@ -1,4 +1,4 @@
-import {observable} from 'mobx';
+import {observable, action} from 'mobx';
 import {Promise} from "es6-promise";
 
 export class AppState {
@@ -6,9 +6,10 @@ export class AppState {
 
     constructor() {}
 
+    @action
     incrementCounter(): Promise<any> {
-        return new Promise(function(resolve, reject) {
-            setTimeout(function() {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
                 resolve();
             }, 100);
         }).then(() => this.counter += 1)
