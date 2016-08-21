@@ -1,11 +1,24 @@
-import * as React from 'react';
+import * as React from "react";
+import {AppState} from "./State";
+import {observer} from "mobx-react";
 
 export interface Props {
-    content: string;
+    appState: AppState;
 }
 
-export default class MyComponent extends React.Component<Props, {}> {
+@observer
+export class MyComponent extends React.Component<Props, {}> {
+    onReset = () => {
+        this.props.appState.resetTimer();
+    };
+
     render() {
-        return <div>{this.props.content}</div>
+        return (
+            <div>
+                <button onClick={this.onReset}>
+                    Seconds passed: {this.props.appState.timer}
+                </button>
+            </div>
+        )
     }
 }

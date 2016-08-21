@@ -1,5 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import Hello from "./Hello";
+import {AppState} from "./State";
+import {MyComponent} from "./Hello";
 
-ReactDOM.render(<Hello content="hello world"/>, document.getElementById('app'));
+const appState =  new AppState();
+ReactDOM.render(<MyComponent appState={appState}/>, document.getElementById('app'));
