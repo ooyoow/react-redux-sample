@@ -1,10 +1,20 @@
 import {observable, action} from 'mobx';
 import {Promise} from "es6-promise";
+const objectAssign = require("object-assign");
+
+export class ChildState {
+    count: number;
+    constructor(n:number){
+        this.count = n
+    }
+}
 
 export class AppState {
-    @observable counter = 0;
+    @observable counter: ChildState;
 
-    constructor() {}
+    constructor() {
+        this.counter = new ChildState(0)
+    }
 
     @action
     incrementCounter(): Promise<any> {
@@ -12,6 +22,10 @@ export class AppState {
             setTimeout(() => {
                 resolve();
             }, 100);
-        }).then(() => this.counter += 1)
+        }).then(() => {
+            const newState:ChildState = objectAssign({}, this.counter);
+            newState.count = this.counter.count + 1;
+            this.counter = newState
+        })
     }
 }
