@@ -1,13 +1,17 @@
 import * as React from 'react';
 import {Link} from "react-router"
 import {Paths} from "./Models";
+import {observer} from "mobx-react";
 
 interface Props {
     children: any
+    params: any
 }
 
+@observer
 export default class Root extends React.Component<Props, {}> {
     render() {
+        console.log(this.props.params);
         return (
             <div>
                 <h1>React Redux sample</h1>

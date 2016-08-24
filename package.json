@@ -30,9 +30,9 @@
     "object-assign": "^4.1.0",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
-    "react-redux": "^4.4.5",
     "react-router": "^2.5.1",
-    "redux": "^3.5.2",
-    "redux-thunk": "^2.1.0"
+    "es6-promise": "^3.2.1",
+    "mobx": "^2.4.3",
+    "mobx-react": "^3.5.5"
   }
 }
