@@ -1,7 +1,10 @@
-import {observable, action} from "mobx";
-import {JsonObject} from "./Models";
-const objectAssign = require("object-assign");
+import {observable, action, IObservableValue} from "mobx";
 import * as axios from "axios";
+const objectAssign = require("object-assign");
+
+export interface JsonObject {
+    amount: number;
+}
 
 export class CountClass {
     count: number;
@@ -18,49 +21,56 @@ export class LoadingCountClass {
 }
 
 export class CounterState {
-    @observable count: CountClass;
+    count: IObservableValue<CountClass>;
 
-    @observable loadingCount: LoadingCountClass;
+    loadingCount: IObservableValue<LoadingCountClass>;
 
     constructor() {
-        this.count = new CountClass(0);
-        this.loadingCount = new LoadingCountClass(0);
+        this.count = observable<CountClass>();
+        this.count.set(new CountClass(0));
+
+        this.loadingCount = observable<LoadingCountClass>();
+        this.loadingCount.set(new LoadingCountClass(0));
     }
 
-    @action
     increment(n: number): void {
         const newCount:CountClass = objectAssign({}, this.count);
-        newCount.count = this.count.count + n;
-        this.count = newCount
+        newCount.count = this.count.get().count + n;
+        this.count.set(newCount)
     }
 
     decrement(n: number): void {
         const newCount:CountClass = objectAssign({}, this.count);
-        newCount.count = this.count.count - n;
-        this.count = newCount
+        newCount.count = this.count.get().count - n;
+        this.count.set(newCount)
     }
 
     fetchAmount(): Promise<any> {
 
         const failCB = (ex:Error) => {
             const newLoadingCount:LoadingCountClass = objectAssign({}, this.loadingCount);
-            newLoadingCount.loadingCount = this.loadingCount.loadingCount - 1;
-            this.loadingCount = newLoadingCount;
+            newLoadingCount.loadingCount = this.loadingCount.get().loadingCount - 1;
+            this.loadingCount.set(newLoadingCount);
         };
 
         const successCB = (json:Axios.AxiosXHR<JsonObject>) => {
             const newLoadingCount:LoadingCountClass = objectAssign({}, this.loadingCount);
-            newLoadingCount.loadingCount = this.loadingCount.loadingCount - 1;
-            this.loadingCount = newLoadingCount;
+            newLoadingCount.loadingCount = this.loadingCount.get().loadingCount - 1;
+            // this.loadingCount.set(newLoadingCount);
 
             const newCount:CountClass = objectAssign({}, this.count);
-            newCount.count = this.count.count + json.data.amount;
-            this.count = newCount
+            newCount.count = this.count.get().count + json.data.amount;
+            // this.count.set(newCount);
+
+            action(() => {
+                this.loadingCount.set(newLoadingCount);
+                this.count.set(newCount);
+            })()
         };
 
         const newLoadingCount:LoadingCountClass = objectAssign({}, this.loadingCount);
-        newLoadingCount.loadingCount = this.loadingCount.loadingCount + 1;
-        this.loadingCount = newLoadingCount;
+        newLoadingCount.loadingCount = this.loadingCount.get().loadingCount + 1;
+        this.loadingCount.set(newLoadingCount);
 
         return axios.get('/api/count')
             .then(successCB)
