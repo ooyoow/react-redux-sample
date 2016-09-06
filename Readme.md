@@ -5,7 +5,7 @@ minimal sample implement
 
 ## requirement
 
-- NodeJS 5.X~
+- NodeJS 6.X~
 
 ## setup
 
@@ -21,14 +21,31 @@ webpack watches update & re-build automatically
 
 it need json response server.
 
-`python -m SimpleHTTPServer`
+`npm run server`
 
 ## test
 
-tsx test
+run only some tests.
 
-`npm run test:tsx`
+`npm run test:karma-ut ./src/__test__/Reducer-test.ts`
 
-ts test
+run all tests
 
-`npm run test:ts`
+`npm run test:karma-all`
+
+run with coverage
+
+```
+# run test & calc coverage
+npm run test:karma-coverage
+
+# show report as html
+npm run coverage-html
+
+# send report to coveralls
+npm run coveralls
+```
+
+## Licence
+
+MIT
