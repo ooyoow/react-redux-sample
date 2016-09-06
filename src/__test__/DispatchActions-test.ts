@@ -1,4 +1,4 @@
-import {ActionTypes} from "../Models";
+import {ActionTypes} from "../Entities";
 import {DispatchActions} from "../DispatchActions";
 const axios = require('axios');
 const MockAdapter = require('axios-mock-adapter');
