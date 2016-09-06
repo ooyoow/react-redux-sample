@@ -3,8 +3,7 @@ const args = process.argv;
 args.splice(0, 4);
 
 const polyfils = [
-  'node_modules/jquery/dist/jquery.min.js',
-  'node_modules/materialize-css/dist/js/materialize.min.js'
+  'node_modules/jquery/dist/jquery.min.js'
 ];
 
 var files = polyfils.concat(args);
