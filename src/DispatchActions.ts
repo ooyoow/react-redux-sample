@@ -1,5 +1,6 @@
-import * as axios from "axios";
+import * as request from 'superagent';
 import {ActionTypes, JsonObject} from "./Entities";
+import {Response} from "superagent";
 
 export class DispatchActions {
     private dispatch: (action: any) => any;
@@ -15,20 +16,24 @@ export class DispatchActions {
         this.dispatch({ type: ActionTypes.DECREMENT, amount: amount})
     }
 
-    public fetchAmount(): Axios.IPromise<any> {
+    public fetchAmount(): Promise<void> {
         const failCB = (err:Error) => {
             console.error(err);
             this.dispatch({ type: ActionTypes.FETCH_FAIL})
         };
 
-        const successCB = (json:Axios.AxiosXHR<JsonObject>) => {
-            const action = { type: ActionTypes.FETCH_SUCCESS, amount: json.data.amount};
+        const successCB = (res:Response) => {
+            const json:JsonObject = res.body;
+            const action = { type: ActionTypes.FETCH_SUCCESS, amount: json.amount};
             this.dispatch(action)
         };
 
         this.dispatch({ type: ActionTypes.FETCH_REQUEST});
-        return axios.get('/api/count')
+
+        return request
+            .get('/api/count')
+            .set('Accept', 'application/json')
             .then(successCB)
-            .catch(failCB)
+            .catch(failCB);
     }
 }
