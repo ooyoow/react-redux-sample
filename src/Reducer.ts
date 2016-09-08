@@ -1,4 +1,4 @@
-import {GlobalState, MyAction, ActionTypes} from "./Models";
+import {GlobalState, MyAction, ActionTypes} from "./Entities";
 
 const initialState:GlobalState = {num: 0};
 
