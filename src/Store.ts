@@ -1,4 +1,4 @@
-import {counter} from './Reducer'
+import {counter} from './counter/Reducer'
 import { createStore, combineReducers } from 'redux'
 
 export default createStore(

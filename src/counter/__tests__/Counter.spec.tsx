@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Counter} from "../Counter";
-import {GlobalState} from "../Entities";
+import {CounterState} from "../Entities";
 import * as TestUtils from "react-addons-test-utils";
 import * as ReactDOM from "react-dom";
 
@@ -8,9 +8,9 @@ describe('Counter', () => {
 
     it('rendering', () => {
         const actions:any = {};
-        const state: GlobalState = {num: 1, loadingCount: 1};
+        const state: CounterState = {num: 1, loadingCount: 1};
         const counterComponent: any = TestUtils.renderIntoDocument(
-            <Counter value={state} actions={actions} />
+            <Counter state={state} actions={actions} />
         );
 
         const counterDOM = ReactDOM.findDOMNode(counterComponent);
@@ -26,9 +26,9 @@ describe('Counter', () => {
     it('click', () => {
         const spy:any = {fetchAmount: null};
         spyOn(spy, 'fetchAmount');
-        const state: GlobalState = {num: 0, loadingCount: 0};
+        const state: CounterState = {num: 0, loadingCount: 0};
         const counterComponent: any = TestUtils.renderIntoDocument(
-            <Counter value={state} actions={spy} />
+            <Counter state={state} actions={spy} />
         );
 
         const counterDOM = ReactDOM.findDOMNode(counterComponent);

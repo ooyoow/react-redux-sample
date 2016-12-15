@@ -1,8 +1,8 @@
-import {GlobalState, MyAction, ActionTypes} from "./Entities";
+import {CounterState, MyAction, ActionTypes} from "./Entities";
 
-const initialState: GlobalState = {num: 0, loadingCount: 0};
+const initialState: CounterState = {num: 0, loadingCount: 0};
 
-export function counter(state: GlobalState = initialState, action: MyAction): GlobalState {
+export function counter(state: CounterState = initialState, action: MyAction): CounterState {
   //console.log(action.type); //check which action has occurred;
   //console.log(state);
   switch (action.type) {
