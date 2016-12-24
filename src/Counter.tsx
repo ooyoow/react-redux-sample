@@ -1,21 +1,21 @@
 import * as React from "react";
-import {GlobalState} from "./Entities";
-import {DispatchActions} from "./DispatchActions";
+import {Dispatch} from "redux";
+import {increment, decrement, GlobalState} from "./Reducer";
 
 interface Props {
-    value: GlobalState;
-    actions: DispatchActions;
+  value: GlobalState;
+  dispatch: Dispatch<any>;
 }
 
 export class Counter extends React.Component<Props, {}> {
 
-    render() {
-        return (
-            <div>
-                <p>score: {this.props.value.num}</p>
-                <button onClick={() => this.props.actions.increment(3)}>Increment 3</button>
-                <button onClick={() => this.props.actions.decrement(2)}>Decrement 2</button>
-            </div>
-        )
-    }
+  render() {
+    return (
+      <div>
+        <p>score: {this.props.value.num}</p>
+        <button onClick={() => increment(this.props.dispatch, 3)}>Increment 3</button>
+        <button onClick={() => decrement(this.props.dispatch, 2)}>Decrement 2</button>
+      </div>
+    )
+  }
 }
