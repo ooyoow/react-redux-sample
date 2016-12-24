@@ -1,9 +1,9 @@
 import * as React from "react";
 import {Dispatch} from "redux";
-import {increment, decrement, GlobalState} from "./Reducer";
+import {increment, decrement, CounterState} from "./module";
 
 interface Props {
-  value: GlobalState;
+  value: CounterState;
   dispatch: Dispatch<any>;
 }
 

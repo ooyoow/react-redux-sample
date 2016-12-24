@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {Counter} from "./Counter";
+import {Counter} from "./counter/Root";
 import store from "./Store";
 import {Provider, connect} from "react-redux";
 import {Dispatch} from "redux";
