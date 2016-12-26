@@ -1,5 +1,4 @@
-import 'isomorphic-fetch';
-import {Dispatch} from "redux";
+import "isomorphic-fetch";
 
 export const myHeaders = new Headers({
   "Content-Type": "application/json",
@@ -22,34 +21,36 @@ interface MyAction {
   error?: Error;
 }
 
-const INCREMENT = 'counter/increment';
-const DECREMENT = 'counter/decrement';
-const FETCH_REQUEST = 'counter/fetch_request';
-const FETCH_SUCCESS = 'counter/fetch_success';
-const FETCH_FAIL = 'counter/fetch_fail';
+export class ActionTypes{
+  static INCREMENT = 'counter/increment';
+  static DECREMENT = 'counter/decrement';
+  static FETCH_REQUEST = 'counter/fetch_request';
+  static FETCH_SUCCESS = 'counter/fetch_success';
+  static FETCH_FAIL = 'counter/fetch_fail';
+}
 
 const initialState:CounterState = {num: 0, loadingCount: 0};
 
 export default function reducer(state: CounterState = initialState, action: MyAction): CounterState {
   switch (action.type) {
-    case INCREMENT: {
+    case ActionTypes.INCREMENT: {
       const newNum = state.num + action.amount;
       return Object.assign({}, state, {num: newNum});
     }
-    case DECREMENT: {
+    case ActionTypes.DECREMENT: {
       const newNum = state.num - action.amount;
       return Object.assign({}, state, {num: newNum});
     }
-    case FETCH_REQUEST: {
+    case ActionTypes.FETCH_REQUEST: {
       const newCount = state.loadingCount + 1;
       return Object.assign({}, state, {loadingCount: newCount});
     }
-    case FETCH_SUCCESS: {
+    case ActionTypes.FETCH_SUCCESS: {
       const newNum = state.num + action.amount;
       const newCount = state.loadingCount - 1;
       return Object.assign({}, state, {num: newNum, loadingCount: newCount});
     }
-    case FETCH_FAIL: {
+    case ActionTypes.FETCH_FAIL: {
       console.error(action.error);
       const newCount = state.loadingCount - 1;
       return Object.assign({}, state, {loadingCount: newCount});
@@ -59,35 +60,43 @@ export default function reducer(state: CounterState = initialState, action: MyAc
   }
 }
 
-export function increment(dispatch: Dispatch<any>, amount: number) {
-  dispatch({ type: INCREMENT, amount: amount})
-}
+export class ActionDispatcher {
+  private dispatch: (action: any) => any;
 
-export function decrement(dispatch: Dispatch<any>, amount: number) {
-  dispatch({ type: DECREMENT, amount: amount})
-}
+  constructor(dispatch: (action: any) => any) {
+    this.dispatch = dispatch
+  }
 
-export function fetchAmount(dispatch: Dispatch<any>): Promise<void> {
-  const failCB = (err: Error) => {
-    console.error(err);
-    dispatch({type: FETCH_FAIL, error: err})
-  };
+  public increment(amount: number) {
+    this.dispatch({type: ActionTypes.INCREMENT, amount: amount})
+  }
 
-  const successCB:(response: IResponse) => Promise<void> = (response) => {
+  public decrement(amount: number) {
+    this.dispatch({type: ActionTypes.DECREMENT, amount: amount})
+  }
 
-    if(response.status === 200){ //2xx
-      return response.json<JsonObject>().then((json) => {
-        const action = {type: FETCH_SUCCESS, amount: json.amount};
-        dispatch(action)
-      });
-    }else{
-      dispatch({type: FETCH_FAIL, error: response.status})
-    }
-  };
+  public fetchAmount(): Promise<void> {
+    const failCB = (err: Error) => {
+      console.error(err);
+      this.dispatch({type: ActionTypes.FETCH_FAIL, error: err})
+    };
 
-  dispatch({type: FETCH_REQUEST});
+    const successCB: (response: IResponse) => Promise<void> = (response) => {
 
-  return fetch('/api/count', {method: 'GET', headers: myHeaders, credentials: 'include'})
-    .then(successCB)
-    .catch(failCB)
+      if (response.status === 200) { //2xx
+        return response.json<JsonObject>().then((json) => {
+          const action = {type: ActionTypes.FETCH_SUCCESS, amount: json.amount};
+          this.dispatch(action)
+        });
+      } else {
+        this.dispatch({type: ActionTypes.FETCH_FAIL, error: response.status})
+      }
+    };
+
+    this.dispatch({type: ActionTypes.FETCH_REQUEST});
+
+    return fetch('/api/count', {method: 'GET', headers: myHeaders, credentials: 'include'})
+      .then(successCB)
+      .catch(failCB)
+  }
 }
