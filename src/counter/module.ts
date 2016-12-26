@@ -1,5 +1,3 @@
-import {Dispatch} from "redux";
-
 export interface CounterState {
   num: number;
 }
@@ -9,26 +7,36 @@ interface MyAction {
   amount?: number;
 }
 
-const INCREMENT = 'counter/increment';
-const DECREMENT = 'counter/decrement';
+export class ActionTypes {
+  static INCREMENT = 'counter/increment';
+  static DECREMENT = 'counter/decrement';
+}
 
 const initialState:CounterState = {num: 0};
 
 export default function reducer(state: CounterState = initialState, action: MyAction): CounterState {
   switch (action.type) {
-    case INCREMENT:
+    case ActionTypes.INCREMENT:
       return {num: state.num + action.amount};
-    case DECREMENT:
+    case ActionTypes.DECREMENT:
       return {num: state.num - action.amount};
     default:
       return state
   }
 }
 
-export function increment(dispatch: Dispatch<any>, amount: number) {
-  dispatch({ type: INCREMENT, amount: amount})
-}
+export class ActionDispatcher {
+  private dispatch: (action: any) => any;
 
-export function decrement(dispatch: Dispatch<any>, amount: number) {
-  dispatch({ type: DECREMENT, amount: amount})
+  constructor(dispatch: (action: any) => any) {
+    this.dispatch = dispatch
+  }
+
+  public increment(amount: number) {
+    this.dispatch({type: ActionTypes.INCREMENT, amount: amount})
+  }
+
+  public decrement(amount: number) {
+    this.dispatch({type: ActionTypes.DECREMENT, amount: amount})
+  }
 }

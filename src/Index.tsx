@@ -1,18 +1,13 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import {Counter} from "./counter/Root";
+import "core-js";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import Counter from "./counter/Root";
 import store from "./Store";
-import {Provider, connect} from "react-redux";
-import {Dispatch} from "redux";
-
-const CounterComponent = connect(
-  (store: any) => ({value: store.counter}),
-  (dispatch: Dispatch<any>) => ({dispatch: dispatch})
-)(Counter);
+import {Provider} from "react-redux";
 
 ReactDOM.render(
   <Provider store={store}>
-    <CounterComponent />
+    <Counter />
   </Provider>
   , document.getElementById('app')
 );
