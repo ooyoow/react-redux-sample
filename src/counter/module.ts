@@ -20,14 +20,14 @@ interface MyAction {
   amount?: number;
 }
 
-export class ActionTypes{
+export class ActionTypes {
   static INCREMENT = 'counter/increment';
   static DECREMENT = 'counter/decrement';
   static FETCH_REQUEST_START = 'counter/fetch_request_start';
   static FETCH_REQUEST_FINISH = 'counter/fetch_request_finish';
 }
 
-const initialState:CounterState = {num: 0, loadingCount: 0};
+const initialState: CounterState = {num: 0, loadingCount: 0};
 
 export default function reducer(state: CounterState = initialState, action: MyAction): CounterState {
   switch (action.type) {
@@ -79,13 +79,13 @@ export class ActionDispatcher {
 
       if (response.status === 200) { //2xx
         const json = await response.json<JsonObject>();
-        this.dispatch({type: ActionTypes.FETCH_REQUEST_FINISH});
         this.dispatch({type: ActionTypes.INCREMENT, amount: json.amount})
       } else {
         throw new Error(`illegal status code: ${response.status}`);
       }
-    } catch(err/* :Error*/) {
+    } catch (err) {
       console.error(err);
+    } finally {
       this.dispatch({type: ActionTypes.FETCH_REQUEST_FINISH})
     }
   }
